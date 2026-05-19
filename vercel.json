@@ -1,6 +1,13 @@
 {
+  "outputDirectory": "public",
   "rewrites": [
-    { "source": "/rc4vc", "destination": "/public/rc4vc.html" },
-    { "source": "/teste", "destination": "/public/teste.html" }
+    {
+      "source": "/rc4vc",
+      "destination": "/rc4vc.html"
+    },
+    {
+      "source": "/teste",
+      "destination": "/teste.html"
+    }
   ]
 }
