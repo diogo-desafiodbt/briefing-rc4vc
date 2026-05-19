@@ -48,24 +48,19 @@
   button#sendBtn:hover { opacity: 0.9; transform: scale(1.03); }
   button#sendBtn:active { transform: scale(0.97); }
   button#sendBtn svg { width: 20px; height: 20px; fill: #0a0c10; }
-  .briefing-box { background: var(--surface2); border: 1px solid var(--accent); border-radius: var(--radius); padding: 20px; font-size: 13px; line-height: 1.8; white-space: pre-wrap; color: var(--text); }
-  .briefing-box h3 { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  .copy-btn { margin-top: 14px; background: var(--accent); color: #0a0c10; border: none; border-radius: 8px; padding: 9px 18px; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; transition: opacity 0.2s; display: block; }
-  .copy-btn:hover { opacity: 0.85; }
 </style>
 </head>
 <body>
 <header>
   <div class="logo-mark">QP</div>
   <div class="header-info">
-    <h1>Assistente de Briefing — Quora Performance <span style="background:#c8a96e22;color:#c8a96e;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:600;letter-spacing:1px;vertical-align:middle;">TESTE</span></h1>
-    <p>Artes de Maio · RC4VC · Instagram</p>
+    <h1>Assistente de Briefing — Quora Performance</h1>
+    <p>Briefing de arte para qualquer cliente</p>
   </div>
   <div class="progress-bar-wrap">
-    <span class="progress-label" id="progressLabel">0 de 6 temas</span>
+    <span class="progress-label" id="progressLabel">0 de 5 etapas</span>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
-  <button onclick="resetChat()" style="margin-left:12px;background:transparent;border:1px solid #2a2f3a;color:#7a8194;border-radius:8px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.borderColor='#c8a96e';this.style.color='#c8a96e'" onmouseout="this.style.borderColor='#2a2f3a';this.style.color='#7a8194'">↺ Reiniciar</button>
 </header>
 <div id="chat"></div>
 <footer>
@@ -77,80 +72,43 @@
   </div>
 </footer>
 <script>
-const IS_TESTE = true;
-const TEMAS = ["Novas Profissões","Atualizações do Sistema","Collab — Karina e Felipe (dados do mercado de processos e condenações)","Divulgação do Site","Novo Cotador e Comparativo","Marco Legal (X Tempo)"];
-const SYSTEM_PROMPT = `Você é o Assistente de Briefing da Quora Performance, uma agência que produz artes para o Instagram do podcast RC4VC — um podcast voltado para corretores de seguros com foco em Seguro de Responsabilidade Civil.
+const ETAPAS = ['Objetivo', 'Mensagem principal', 'Tom visual', 'Texto/chamada', 'Destaques'];
+const SYSTEM_PROMPT = `Você é o Assistente de Briefing da Quora Performance, uma agência de design e comunicação visual.
 
-Seu papel é entrevistar o cliente da RC4VC sobre as artes de Maio, tema por tema, e ao final gerar um briefing claro e estruturado para a designer executar.
+Seu papel é conduzir UMA entrevista para UMA arte, coletar informações com o cliente e gerar um briefing estruturado para a equipe de design executar.
 
-TEMAS DE MAIO:
-1. Novas Profissões
-2. Atualizações do Sistema
-3. Collab — Karina e Felipe (dados do mercado de processos e condenações)
-4. Divulgação do Site
-5. Novo Cotador e Comparativo
-6. Marco Legal (X Tempo)
+FLUXO:
+1. Apresente-se em 2 linhas e peça em UMA única pergunta: o nome da empresa e o nome da arte desejada (ex.: "Informe o nome da empresa e o nome da arte que deseja criar").
+2. Após o cliente informar empresa e arte, conduza 5 etapas nesta ordem, UMA pergunta por vez:
+   Etapa 1 — Objetivo da arte
+   Etapa 2 — Mensagem principal
+   Etapa 3 — Tom visual e referências
+   Etapa 4 — Texto/chamada que deve aparecer na arte
+   Etapa 5 — Destaques e observações
+3. Só avance de etapa quando tiver a informação da etapa atual. Ao avançar, diga exatamente: "Perfeito! Vamos à próxima etapa."
+4. Após concluir as 5 etapas, gere o briefing EXATAMENTE neste formato, sem texto extra antes ou depois:
+
+BRIEFING — EMPRESA: [nome da empresa] | ARTE: [nome da arte]
+Quora Performance
+===
+• Objetivo:
+• Mensagem principal:
+• Tom visual:
+• Texto/chamada para a arte:
+• Destaques e observações:
+
+===
+ORIENTAÇÕES GERAIS PARA A DESIGNER:
+[3 a 5 orientações sobre identidade visual, tom da marca e cuidados para a arte]
 
 REGRAS:
 - Seja profissional, direto e amigável
 - Faça UMA pergunta por vez
-- Para cada tema colete: (1) objetivo do post, (2) mensagem principal, (3) elementos visuais ou referências, (4) texto/chamada que deve aparecer na arte, (5) destaque especial
-- Só avance quando tiver essas 5 informações. Diga "Perfeito! Vamos ao próximo tema." ao avançar
-- Após os 6 temas, gere o briefing exatamente neste formato, sem texto extra:
+- Não pule etapas
+- Use os nomes de empresa e arte informados pelo cliente em todo o diálogo`;
 
-BRIEFING DE ARTES — MAIO 2025
-RC4VC × Quora Performance
-Instagram
-===
-TEMA 1: Novas Profissões
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-TEMA 2: Atualizações do Sistema
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-TEMA 3: Collab — Karina e Felipe
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-TEMA 4: Divulgação do Site
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-TEMA 5: Novo Cotador e Comparativo
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-TEMA 6: Marco Legal (X Tempo)
-• Objetivo: 
-• Mensagem principal: 
-• Tom visual: 
-• Texto/chamada para a arte: 
-• Destaques e observações: 
-
-===
-ORIENTAÇÕES GERAIS PARA A DESIGNER:
-[3 a 5 orientações sobre identidade visual, tom da marca RC4VC e cuidados para todos os posts]
-
-Apresente-se em 2 linhas e inicie pelo Tema 1.`;
-
-let history = [], temaAtual = 0, briefingGerado = false, isLoading = false;
+let history = [], etapaAtual = 0, briefingGerado = false, isLoading = false;
+let empresa = '', arte = '', namesCollected = false;
 const chat = document.getElementById('chat');
 const input = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
@@ -158,16 +116,41 @@ const progressFill = document.getElementById('progressFill');
 const progressLabel = document.getElementById('progressLabel');
 
 function updateProgress(n) {
-  const s = Math.min(n, TEMAS.length);
-  progressFill.style.width = (s / TEMAS.length * 100) + '%';
-  progressLabel.textContent = s + ' de ' + TEMAS.length + ' temas';
+  const s = Math.min(n, ETAPAS.length);
+  progressFill.style.width = (s / ETAPAS.length * 100) + '%';
+  progressLabel.textContent = s + ' de ' + ETAPAS.length + ' etapas';
 }
 
 function detectProgress(text) {
-  if (text.toLowerCase().includes('próximo tema') || text.toLowerCase().includes('vamos ao tema')) {
-    temaAtual = Math.min(temaAtual + 1, TEMAS.length);
-    updateProgress(temaAtual);
+  const t = text.toLowerCase();
+  if (t.includes('próxima etapa') || t.includes('vamos à etapa')) {
+    etapaAtual = Math.min(etapaAtual + 1, ETAPAS.length);
+    updateProgress(etapaAtual);
   }
+}
+
+function captureNames(text) {
+  namesCollected = true;
+  const parts = text.split(/[,;|]|\s+-\s+/).map(s => s.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    empresa = parts[0];
+    arte = parts.slice(1).join(' — ');
+  } else {
+    empresa = text.trim();
+    arte = text.trim();
+  }
+}
+
+function parseNamesFromBriefing(text) {
+  const m = text.match(/BRIEFING\s*—\s*EMPRESA:\s*(.+?)\s*\|\s*ARTE:\s*(.+?)(?:\n|$)/i);
+  if (m) {
+    empresa = m[1].trim();
+    arte = m[2].trim();
+  }
+}
+
+function isBriefingComplete(reply) {
+  return reply.includes('BRIEFING —') && reply.includes('EMPRESA:') && reply.includes('ARTE:');
 }
 
 function addBubble(role, text) {
@@ -199,34 +182,44 @@ function addTyping() {
 
 function removeTyping() { const t = document.getElementById('typing-ind'); if (t) t.remove(); }
 
-function showBriefing(text) {
-  const wrap = document.createElement('div');
-  wrap.className = 'bubble ai'; wrap.style.maxWidth = '95%';
-  const label = document.createElement('div');
-  label.className = 'sender-label'; label.textContent = 'Assistente';
-  wrap.appendChild(label);
-  const box = document.createElement('div'); box.className = 'briefing-box';
-  const title = document.createElement('h3'); title.textContent = '📋 Briefing de Artes — Maio 2025';
-  box.appendChild(title);
-  const content = document.createElement('div'); content.textContent = text;
-  box.appendChild(content);
-  const btn = document.createElement('button'); btn.className = 'copy-btn'; btn.textContent = '📋 Copiar Briefing';
-  btn.onclick = () => { navigator.clipboard.writeText(text).then(() => { btn.textContent = '✅ Copiado!'; setTimeout(() => btn.textContent = '📋 Copiar Briefing', 2500); }); };
-  box.appendChild(btn); wrap.appendChild(box); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+const THANK_YOU_MSG = 'Obrigado pelas respostas, agora a Equipe de Designers do Quora irá trabalhar para te entregar uma bela arte';
+
+function submitBriefingSilently(briefing) {
+  fetch('/api/submit-briefing', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ briefing, empresa, arte })
+  }).catch(() => {});
+}
+
+function finishSession(briefing) {
+  parseNamesFromBriefing(briefing);
+  submitBriefingSilently(briefing);
+  addBubble('system', THANK_YOU_MSG);
+  input.disabled = true;
+  sendBtn.disabled = true;
+  input.placeholder = 'Obrigado! Em breve você receberá suas artes.';
 }
 
 async function callAPI(messages) {
   const res = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM_PROMPT, messages })
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 4096, system: SYSTEM_PROMPT, messages })
   });
   const data = await res.json();
-  return data.content?.[0]?.text || '';
+  if (!res.ok) {
+    const msg = data.error?.message || (typeof data.error === 'string' ? data.error : null) || 'Erro ao contactar a API';
+    throw new Error(msg);
+  }
+  const text = data.content?.[0]?.text;
+  if (!text) throw new Error('Resposta vazia da API');
+  return text;
 }
 
 async function sendMessage(userText) {
   if (isLoading) return;
+  if (!namesCollected) captureNames(userText);
   isLoading = true; sendBtn.disabled = true;
   addBubble('user', userText);
   history.push({ role: 'user', content: userText });
@@ -236,28 +229,26 @@ async function sendMessage(userText) {
     removeTyping();
     history.push({ role: 'assistant', content: reply });
     detectProgress(reply);
-    if (reply.includes('BRIEFING DE ARTES') && reply.includes('TEMA 1:') && !briefingGerado) {
-      briefingGerado = true; temaAtual = TEMAS.length; updateProgress(TEMAS.length);
-      showBriefing(reply);
-      const sys = document.createElement('div'); sys.className = 'bubble system';
-      sys.textContent = '✅ Briefing completo! Copie acima e envie para sua designer.';
-      chat.appendChild(sys); chat.scrollTop = chat.scrollHeight;
+    if (isBriefingComplete(reply) && !briefingGerado) {
+      briefingGerado = true; etapaAtual = ETAPAS.length; updateProgress(ETAPAS.length);
+      finishSession(reply);
     } else { addBubble('ai', reply); }
-  } catch(e) { removeTyping(); addBubble('system', '⚠️ Erro de conexão. Tente novamente.'); }
-  isLoading = false; sendBtn.disabled = false; input.focus();
+  } catch(e) { removeTyping(); addBubble('system', '⚠️ ' + (e.message || 'Erro de conexão. Tente novamente.')); }
+  isLoading = false;
+  if (!briefingGerado) { sendBtn.disabled = false; input.focus(); }
 }
 
 async function init() {
   updateProgress(0); addTyping();
   try {
-    const initMsg = [{ role: 'user', content: 'Olá, estou pronto para responder sobre as artes de Maio.' }];
+    const initMsg = [{ role: 'user', content: 'Olá, quero criar um briefing para uma arte.' }];
     const reply = await callAPI(initMsg);
     removeTyping();
     history.push(...initMsg); history.push({ role: 'assistant', content: reply });
     addBubble('ai', reply);
   } catch(e) {
     removeTyping();
-    addBubble('ai', 'Olá! Sou o Assistente de Briefing da Quora Performance. Vamos definir as artes de Maio do RC4VC!\n\nVamos começar pelo **Tema 1: Novas Profissões**. Qual é o objetivo principal desse post?');
+    addBubble('system', '⚠️ ' + (e.message || 'Erro de conexão. Tente novamente.'));
   }
 }
 
@@ -267,14 +258,6 @@ sendBtn.addEventListener('click', () => {
 });
 input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); } });
 input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 120) + 'px'; });
-function resetChat() {
-  history = []; temaAtual = 0; briefingGerado = false; isLoading = false;
-  chat.innerHTML = '';
-  updateProgress(0);
-  sendBtn.disabled = false;
-  input.value = '';
-  init();
-}
 init();
 </script>
 </body>

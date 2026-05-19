@@ -1,12 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/rc4vc",
-      "destination": "/rc4vc.html"
+      "source": "/",
+      "destination": "/briefing.html"
     },
     {
-      "source": "/teste",
-      "destination": "/teste.html"
+      "source": "/briefing",
+      "destination": "/briefing.html"
+    },
+    {
+      "source": "/rc4vc",
+      "destination": "/briefing.html"
     }
   ]
 }
